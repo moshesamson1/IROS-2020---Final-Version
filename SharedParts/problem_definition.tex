@@ -1,0 +1,54 @@
+Let \rob and \opp be two robots operating in an obstacle-free grid \w of size $N=m \times n$. Both robots move in the four basic directions (North, South, East, West). Consider robot \rob to be our robot-of-interest, and robot \opp to be the opponent. 
+The goal of each robot is to cover the area, that is, find a path (denoted as the coverage path) that visits  each point in the area at least once. We define a coverage strategy of a robot as the coverage path, including the order of cells visited (specifically in a cyclic coverage path, the strategy indicates both the cells' ordering, and the direction of movement---clockwise or counterclockwise). We denote \rob's and \opp's strategies by $S_\rob,S_\opp\in \mathcal{S}$, respectively, where $\cal{S}$ stands for the possible strategies space. In this paper we focus our attention to the {\em offline} version of the competitive coverage problem, in which $S_\rob$ and $S_\opp$ are deterministic, and computed in advance (before the execution), and thus consist of $\w$'s cells permutation. For an {\em online} version, the strategy are random or deterministic, and may be adjusted during the execution based on the environment, the opponent's behavior, random factors, and more. We leave the online version of the competitive coverage problem to future work.
+
+
+Robot \opp is covering \w using an optimal coverage strategy, that is, it follows a path guaranteeing coverage in minimal time.
+Since solving the coverage problem is generally computationally hard \cite{arkin2000approximation}, then for the sake of the analysis we focus on environments in which an optimal coverage path can be computed in polynomial time using the Spanning-Tree Coverage Algorithm \cite{gabriely2001spanning} which generates cyclic coverage paths under some assumptions on the environment. 
+
+
+
+%(we based our experiments on the Spanning-Tree Coverage algorithm \cite{gabriely2001spanning}). 
+Robot \rob's goal is to cover as many cells as possible {\em before they are visited by \rob}. % \rob strive first to maximize the number of cells it covers before \opp. 
+Denote the number of cells in \w first covered by robot $x, x \in \{ \rob, \opp\} $ by $\fcc_{x}$. Therefore our goal is to find a coverage path for \rob that maximizes $\fcc_{\rob}$.
+%\begin{dmath*}[compact]
+%\fcc_{x}= 
+%\# \lbrace \textnormal{ Cells First Covered by } x \in %\lbrace\rob,\opp\rbrace \rbrace 
+%\end{dmath*}
+When deciding between options with the same \fcc value, \rob will choose the one that yields the fastest coverage time.% - the time it takes \rob to cover all of \w.
+
+
+
+
+
+Denote the initial location of  \rob (\opp) by $i_{\rob}$ ($i_{\opp}$). %The calculation of the covering strategy of \rob, $S_\rob$, is based on its initial location, $i_r$. The initial position of \opp, $i_\opp$, is not necessarily known to \rob.
+%The way we define the problem, 
+Robot \rob can be given $i_\opp$, $S_\opp$, both or neither. These types of information are called {\em Information Models}, and are defined as follows:
+\begin{definition}[\textbf{Information Model}]
+Information Model $\IM \in \lbrace \varnothing, \lbrace S,I\rbrace \rbrace$, represents the knowledge a robot has on its opponent. $S\in \mathcal{S} \cup \lbrace S_\emptyset \rbrace$, where $S_\emptyset$ stands for an unknown strategy, and $I \in \w \cup \lbrace \w_\emptyset \rbrace$, where $\w_{\emptyset}$ refers to an unknown initial point. 
+If $\IM=\varnothing$ then the player of interest does not know its opponent exists.
+Let $\IM_\rob$ be the information model \rob is given about \opp, and let $\IM_\opp$ be the information model \opp is given about \rob.
+\end{definition}
+
+We assume that $\IM_{\rob} \neq \varnothing$, that is, \rob knows \opp exists. However, $\IM_\opp=\varnothing$, that is, \opp does not know \rob exists. This is referred to as {\em asymmetric} competitive coverage (we leave the symmetric version, in which \opp is aware of the existence of \rob, to future work). 
+%Robot \opp can operate with or without the knowledge of robot \rob's existence. We refer to these cases as the {\em symmetric and asymmetric competitive coverage}, respectively.
+%In the {\em asymmetric} case, $\IM_\opp=\varnothing$, and in the {\em symmetric} case, $\IM_\opp \neq \varnothing$. In both, $\IM_\rob \neq \varnothing $. We focus on the asymmetric variant of the problem. 
+Therefore, considering all said above, the (asymmetric) Competitive Coverage Problem is formally defined as follows.%present in \Cref{definitions: problem} the competitive coverage problem definition.
+%\begin{figure}
+ %   \centering
+ %   \begin{mdframed}[backgroundcolor=gray!20] 
+%\begin{definition}
+
+\begin{tcolorbox}[boxsep=1pt,left=2pt,right=2pt,top=0pt,bottom=0pt]
+\textbf{Competitive Coverage Problem}\\
+Let $\w$ be a finite, obstacles-free grid of size $N$. Given $\IM_\opp=\lbrace S_\opp ,i_\opp \rbrace$ %to \rob and $\IM_\rob \in \lbrace \varnothing, \lbrace S_\rob, i_\rob \rbrace \rbrace$ to \opp,
+find $S_\rob^\star \in \mathcal{S}$ s.t.
+\begin{dmath*}[compact]
+S_\rob^\star =\argmax_{S_\rob\in\mathcal{S}} \lbrace \fcc_{\rob}(\IM_\rob,\IM_\opp ) \rbrace
+\end{dmath*}
+%\vspace{-0.2cm}
+\end{tcolorbox}
+%\end{definition}
+%\end{mdframed}
+%    \caption{Competitive Coverage: Definition}
+%    \label{definitions: problem}
+%\end{figure}
